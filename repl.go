@@ -92,12 +92,6 @@ func commandMap(c *config) error {
 	return nil
 }
 
-func commandExit(c *config) error {
-	fmt.Println("Closing the Pokedex... Goodbye!")
-	os.Exit(0)
-	return nil
-}
-
 func commandHelp(c *config) error {
 	fmt.Println("Welcome to the Pokedex!\nUsage:\n")
 	for key, val := range c.commandRegistry {
