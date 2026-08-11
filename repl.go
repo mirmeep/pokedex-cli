@@ -56,12 +56,7 @@ func getMapLocationAreas(url string) (Response, error) {
 	return response, nil
 }
 
-func commandMap(c *config) error {
-	baseURL := "https://pokeapi.co/api/v2/location-area/"
-	if c.next != nil {
-		baseURL = *c.next
-	}
-
+func mapResponseHandler(baseURL string, c *config) error {
 	response, err := getMapLocationAreas(baseURL)
 	if err != nil {
 		return err
@@ -72,6 +67,28 @@ func commandMap(c *config) error {
 		fmt.Println(location.Name)
 	}
 	
+	return nil
+}
+
+func commandMapB(c *config) error {
+	baseURL := "https://pokeapi.co/api/v2/location-area/"
+	if c.previous != nil {
+		baseURL = *c.previous
+	}	
+
+	mapResponseHandler(baseURL, c)
+
+	return nil
+}
+
+func commandMap(c *config) error {
+	baseURL := "https://pokeapi.co/api/v2/location-area/"
+	if c.next != nil {
+		baseURL = *c.next
+	}
+
+	mapResponseHandler(baseURL, c)
+
 	return nil
 }
 

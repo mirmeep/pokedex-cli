@@ -13,6 +13,11 @@ func main() {
 				description: "Displays the next 20 locations",
 				callback: 	commandMap,
 			},
+			"mapb": {
+				name: 		"mapb",
+				description: "Displays the previous 20 locations",
+				callback: 	commandMapB,
+			},			
 			"exit": {
 				name: 		"exit",
 				description: "Exit the Pokedex",
