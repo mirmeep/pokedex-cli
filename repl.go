@@ -60,7 +60,10 @@ func startRepl() {
 			fmt.Println("Unknown command")
 			continue
 		}
-		cmd.callback()
+		err := cmd.callback()
+		if err != nil {
+			fmt.Println(err)
+		}
 	}
 }
 
