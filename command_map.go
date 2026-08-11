@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"io"
 	"encoding/json"
-
+	"errors"
 )
 
 type Response struct {
@@ -58,10 +58,10 @@ func mapResponseHandler(baseURL string, c *config) error {
 
 func commandMapB(c *config) error {
 	baseURL := "https://pokeapi.co/api/v2/location-area/"
-	if c.previous != nil {
-		baseURL = *c.previous
+	if c.previous == nil {
+		return errors.New("on the first page, can't go back")
 	}	
-
+	baseURL = *c.previous
 	mapResponseHandler(baseURL, c)
 
 	return nil
