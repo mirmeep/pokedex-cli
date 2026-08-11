@@ -92,14 +92,6 @@ func commandMap(c *config) error {
 	return nil
 }
 
-func commandHelp(c *config) error {
-	fmt.Println("Welcome to the Pokedex!\nUsage:\n")
-	for key, val := range c.commandRegistry {
-		fmt.Printf("%s: %s\n", key, val.description)
-	}
-	return nil
-}
-
 func startRepl(c *config) {
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
