@@ -19,7 +19,7 @@ func mapResponseHandler(baseURL string, conf *config) error {
 	return nil
 }
 
-func commandMapB(conf *config) error {
+func commandMapB(conf *config, params []string) error {
 	baseURL := "https://pokeapi.co/api/v2/location-area/"
 	if conf.previous == nil {
 		return errors.New("on the first page, can't go back")
@@ -30,7 +30,7 @@ func commandMapB(conf *config) error {
 	return nil
 }
 
-func commandMap(conf *config) error {
+func commandMap(conf *config, params []string) error {
 	baseURL := "https://pokeapi.co/api/v2/location-area/"
 	if conf.next != nil {
 		baseURL = *conf.next
