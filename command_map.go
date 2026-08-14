@@ -5,13 +5,13 @@ import (
 	"fmt"
 )
 
-func mapResponseHandler(baseURL string, c *config) error {
-	response, err := c.pokeapiClient.GetMapLocationAreas(baseURL)
+func mapResponseHandler(baseURL string, conf *config) error {
+	response, err := conf.pokeapiClient.GetMapLocationAreas(baseURL)
 	if err != nil {
 		return err
 	}
-	c.next = response.Next
-	c.previous = response.Previous
+	conf.next = response.Next
+	conf.previous = response.Previous
 	for _, location := range response.Results {
 		fmt.Println(location.Name)
 	}	
@@ -19,24 +19,24 @@ func mapResponseHandler(baseURL string, c *config) error {
 	return nil
 }
 
-func commandMapB(c *config) error {
+func commandMapB(conf *config) error {
 	baseURL := "https://pokeapi.co/api/v2/location-area/"
-	if c.previous == nil {
+	if conf.previous == nil {
 		return errors.New("on the first page, can't go back")
 	}	
-	baseURL = *c.previous
-	mapResponseHandler(baseURL, c)
+	baseURL = *conf.previous
+	mapResponseHandler(baseURL, conf)
 
 	return nil
 }
 
-func commandMap(c *config) error {
+func commandMap(conf *config) error {
 	baseURL := "https://pokeapi.co/api/v2/location-area/"
-	if c.next != nil {
-		baseURL = *c.next
+	if conf.next != nil {
+		baseURL = *conf.next
 	}
 
-	mapResponseHandler(baseURL, c)
+	mapResponseHandler(baseURL, conf)
 
 	return nil
 }

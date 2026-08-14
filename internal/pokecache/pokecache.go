@@ -3,7 +3,6 @@ package pokecache
 import (
 	"sync"
 	"time"
-	"fmt"
 )
 
 type Cache struct {
@@ -32,7 +31,6 @@ func (c *Cache) Add(key string, val []byte) {
 		Val: val,
 	}
 	c.mu.Lock()
-	fmt.Println("adding cache for: ", key)
 	c.CacheData[key] = newEntry
 	c.mu.Unlock()
 }
@@ -42,7 +40,6 @@ func (c *Cache) Get(key string) ([]byte, bool) {
 	defer c.mu.Unlock()
 	cacheVal, exists := c.CacheData[key]
 	if exists {
-		fmt.Println("cache hit for: ", key)
 		return cacheVal.Val, true
 	} else {
 		return nil, false
