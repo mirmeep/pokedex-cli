@@ -1,29 +1,15 @@
 package main
 
+import (
+	"time"
+	"github.com/mirmeep/pokedex-cli/internal/pokeapi"
+)
+
 func main() {
+	pokeClient := pokeapi.NewClient(5 * time.Second, 5 * time.Minute)
 	c := config{
-		commandRegistry: map[string]cliCommand{
-			"help": {
-				name: "help",
-				description: "Displays a help message",
-				callback: commandHelp,
-			},
-			"map": {
-				name: 		"map",
-				description: "Displays the next 20 locations",
-				callback: 	commandMap,
-			},
-			"mapb": {
-				name: 		"mapb",
-				description: "Displays the previous 20 locations",
-				callback: 	commandMapB,
-			},			
-			"exit": {
-				name: 		"exit",
-				description: "Exit the Pokedex",
-				callback: 	commandExit,
-			},
-		},
+		commands: getCommands(),
+		pokeapiClient: pokeClient,
 	}
 	startRepl(&c)
 }

@@ -1,56 +1,12 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
-	"io"
-	"encoding/json"
 	"errors"
+	"fmt"
 )
 
-type Response struct {
-	Results  []Location `json:"results"`
-	Next 	 *string
-	Previous *string
-}
-
-type Location struct {
-	Name string `json:"name"`
-}
-
-func getMapLocationAreas(url string, c *config) (Response, error) {
-	cacheData, exists := c.cache.Get(url)
-	var response Response
-	if exists {
-		if err := json.Unmarshal(cacheData, &response); err != nil {
-			return Response{}, err
-		}
-	} else {
-		res, err := http.Get(url)
-		if err != nil {
-			return Response{}, err
-		}
-		defer res.Body.Close()
-
-		data, err := io.ReadAll(res.Body)
-		if res.StatusCode > 299 {
-			return Response{}, fmt.Errorf("Response failed with status code: %d and\nbody: %s\n", res.StatusCode, res.Body)
-		}
-		if err != nil {
-			return Response{}, err
-		}
-
-		c.cache.Add(url, data)
-
-		if err := json.Unmarshal(data, &response); err != nil {
-			return Response{}, err
-		}
-	}
-	return response, nil
-}
-
 func mapResponseHandler(baseURL string, c *config) error {
-	response, err := getMapLocationAreas(baseURL, c)
+	response, err := c.pokeapiClient.GetMapLocationAreas(baseURL)
 	if err != nil {
 		return err
 	}

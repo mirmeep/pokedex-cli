@@ -5,15 +5,14 @@ import (
 	"bufio"
 	"os"
 	"fmt"
-	"time"
-	"github.com/mirmeep/pokedex-cli/internal/pokecache"
+	"github.com/mirmeep/pokedex-cli/internal/pokeapi"
 )
 
 type config struct {
-	commandRegistry map[string]cliCommand
+	commands map[string]cliCommand
+	pokeapiClient pokeapi.Client
 	next *string
 	previous *string
-	cache *pokecache.Cache
 }
 
 type cliCommand struct {
@@ -22,9 +21,33 @@ type cliCommand struct {
 	callback    func(c *config) error
 }
 
+func getCommands() map[string]cliCommand {
+	return map[string]cliCommand{
+		"help": {
+			name: "help",
+			description: "Displays a help message",
+			callback: commandHelp,
+		},
+		"map": {
+			name: 		"map",
+			description: "Displays the next 20 locations",
+			callback: 	commandMap,
+		},
+		"mapb": {
+			name: 		"mapb",
+			description: "Displays the previous 20 locations",
+			callback: 	commandMapB,
+		},			
+		"exit": {
+			name: 		"exit",
+			description: "Exit the Pokedex",
+			callback: 	commandExit,
+		},
+	}
+}
+
 func startRepl(c *config) {
 	scanner := bufio.NewScanner(os.Stdin)
-	c.cache = pokecache.NewCache(5 * time.Second)
 	for {
 		fmt.Print("Pokedex > ")
 		scanner.Scan()
@@ -34,7 +57,7 @@ func startRepl(c *config) {
 		}
 		word := words[0]
 
-		cmd, exists := c.commandRegistry[word]
+		cmd, exists := c.commands[word]
 		if !exists {
 			fmt.Println("Unknown command")
 			continue
