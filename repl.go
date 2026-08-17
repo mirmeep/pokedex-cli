@@ -1,18 +1,20 @@
 package main
 
 import (
-	"strings"
 	"bufio"
-	"os"
 	"fmt"
+	"os"
+	"strings"
+
 	"github.com/mirmeep/pokedex-cli/internal/pokeapi"
 )
 
 type config struct {
-	commands map[string]cliCommand
+	commands      map[string]cliCommand
 	pokeapiClient pokeapi.Client
-	next *string
-	previous *string
+	next          *string
+	previous      *string
+	pokedex       map[string]pokeapi.Pokemon
 }
 
 type cliCommand struct {
@@ -24,29 +26,39 @@ type cliCommand struct {
 func getCommands() map[string]cliCommand {
 	return map[string]cliCommand{
 		"help": {
-			name: "help",
+			name:        "help",
 			description: "Displays a help message",
-			callback: commandHelp,
+			callback:    commandHelp,
 		},
 		"map": {
-			name: 		"map",
+			name:        "map",
 			description: "Displays the next 20 locations",
-			callback: 	commandMap,
+			callback:    commandMap,
 		},
 		"mapb": {
-			name: 		"mapb",
+			name:        "mapb",
 			description: "Displays the previous 20 locations",
-			callback: 	commandMapB,
-		},	
+			callback:    commandMapB,
+		},
 		"explore": {
-			name: "explore",
+			name:        "explore",
 			description: "Lists pokemon at a location",
-			callback: commandExplore,
+			callback:    commandExplore,
+		},
+		"catch": {
+			name:        "catch",
+			description: "Attempts to catch a pokemon",
+			callback:    commandCatch,
+		},
+		"inspect": {
+			name:        "inspect",
+			description: "Inspects a caught pokemon",
+			callback:    commandInspect,
 		},
 		"exit": {
-			name: 		"exit",
+			name:        "exit",
 			description: "Exit the Pokedex",
-			callback: 	commandExit,
+			callback:    commandExit,
 		},
 	}
 }
