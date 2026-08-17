@@ -22,11 +22,11 @@ func commandInspect(conf *config, params []string) error {
 	fmt.Println("Weight:", conf.pokedex[pokemon].Weight)
 	fmt.Println("Stats:")
 	for _, stat := range conf.pokedex[pokemon].Stats {
-		fmt.Printf("	- %s: %d\n", stat.Stat.Name, stat.Base_Stat)
+		fmt.Printf(" - %s: %d\n", stat.Stat.Name, stat.Base_Stat)
 	}
 	fmt.Println("Types:")
 	for _, pokeType := range conf.pokedex[pokemon].Types {
-		fmt.Printf("	- %s\n", pokeType.Type.Name)
+		fmt.Printf(" - %s\n", pokeType.Type.Name)
 	}
 	return nil
 }
