@@ -14,16 +14,19 @@ func mapResponseHandler(baseURL string, conf *config) error {
 	conf.previous = response.Previous
 	for _, location := range response.Results {
 		fmt.Println(location.Name)
-	}	
+	}
 
 	return nil
 }
 
 func commandMapB(conf *config, params []string) error {
+	if len(params) != 0 {
+		return fmt.Errorf("Must include zero args")
+	}
 	baseURL := "https://pokeapi.co/api/v2/location-area/"
 	if conf.previous == nil {
 		return errors.New("on the first page, can't go back")
-	}	
+	}
 	baseURL = *conf.previous
 	mapResponseHandler(baseURL, conf)
 
@@ -31,6 +34,9 @@ func commandMapB(conf *config, params []string) error {
 }
 
 func commandMap(conf *config, params []string) error {
+	if len(params) != 0 {
+		return fmt.Errorf("Must include zero args")
+	}
 	baseURL := "https://pokeapi.co/api/v2/location-area/"
 	if conf.next != nil {
 		baseURL = *conf.next
